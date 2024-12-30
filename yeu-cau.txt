@@ -1,0 +1,35 @@
+ứng dụng chuyển đổi giữa lịch Dương và Âm:
+
+Chuyển đổi ngày tháng tự động:
+
+Cho phép người dùng nhập ngày tháng Dương và nhận kết quả ngày tháng Âm tương ứng, và ngược lại.
+Hỗ trợ chuyển đổi cả năm, tháng, ngày.
+Hiển thị lịch Âm/Dương song song:
+
+Cho phép người dùng xem cả hai lịch Âm và Dương cùng một lúc để dễ dàng so sánh.
+Tùy chọn chọn ngày cụ thể và xem thông tin lịch Dương và Âm.
+Nhắc nhở ngày lễ âm lịch:
+
+Tích hợp các ngày lễ, tết quan trọng của lịch Âm (ví dụ: Tết Nguyên Đán, Rằm tháng 7) vào ứng dụng, với thông báo nhắc nhở người dùng.
+Chế độ lịch hàng tháng:
+
+Hiển thị lịch theo tháng, với khả năng chuyển đổi giữa các tháng Dương và Âm.
+Các ngày lễ sẽ được tô màu khác biệt trong mỗi chế độ.
+Tính toán tuổi theo lịch Âm và Dương:
+
+Người dùng nhập ngày sinh, ứng dụng tự động tính tuổi theo cả hai lịch Dương và Âm.
+Lịch vạn niên:
+
+Cung cấp một lịch vạn niên giúp người dùng tra cứu ngày tháng trong quá khứ và tương lai, bao gồm cả lịch Âm và Dương.
+Gợi ý chọn ngày tốt:
+
+Cung cấp tính năng chọn ngày tốt (theo lịch Âm) để làm việc trọng đại, kết hợp với ngày Dương tương ứng.
+Tính năng tìm kiếm ngày theo sự kiện:
+
+Cho phép người dùng tìm kiếm các sự kiện quan trọng của lịch Âm, ví dụ như ngày tết, rằm tháng giêng, v.v.
+Chế độ Dark Mode:
+
+Hỗ trợ chế độ tối (Dark Mode) cho người dùng yêu thích giao diện đen.
+Hỗ trợ đa ngôn ngữ:
+
+Hỗ trợ nhiều ngôn ngữ cho người dùng ở các quốc gia khác nhau, đặc biệt là tiếng Việt, tiếng Anh.

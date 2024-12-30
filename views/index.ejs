@@ -1,0 +1,246 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title><%= title %></title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="/css/style.css">
+    <link rel="stylesheet" href="/css/dark-mode.css">
+</head>
+<body class="bg-gray-50 dark:bg-gray-900">
+    <nav class="bg-gradient-to-r from-blue-600 to-blue-800 shadow-lg">
+        <div class="max-w-7xl mx-auto px-4">
+            <div class="flex justify-between h-16">
+                <div class="flex items-center">
+                    <span class="text-2xl font-semibold text-white">
+                        <i class="fas fa-calendar-alt mr-2"></i>
+                        Lịch Âm Dương
+                    </span>
+                </div>
+                <div class="flex items-center space-x-4">
+                    <button id="darkModeToggle" class="p-2 rounded-full hover:bg-blue-700 transition-colors">
+                        <i class="fas fa-moon text-white"></i>
+                    </button>
+                    <button id="languageToggle" class="p-2 rounded-full hover:bg-blue-700 transition-colors">
+                        <i class="fas fa-language text-white"></i>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Hero Section với ngày âm lịch -->
+    <div class="bg-gradient-to-br from-indigo-600 via-blue-700 to-blue-800 text-white py-20 relative overflow-hidden">
+        <div class="absolute inset-0 bg-pattern opacity-10"></div>
+        <div class="max-w-7xl mx-auto px-4">
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-8 items-center">
+                <div class="space-y-6 relative z-10">
+                    <h1 class="text-4xl md:text-5xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-white to-blue-100">
+                        Lịch Âm Dương Việt Nam
+                    </h1>
+                    <p class="text-xl font-medium text-blue-100 tracking-wide">
+                        <%= lunar.dayOfWeek %>, ngày <%= lunar.dayName %>
+                    </p>
+                    <div class="text-blue-200 space-y-3 font-medium">
+                        <p>Tháng <%= lunar.monthName %></p>
+                        <p>Năm <%= lunar.yearName %></p>
+                        <p>Tiết: <%= lunar.solarTerm %></p>
+                    </div>
+                </div>
+                <div class="bg-white/10 backdrop-blur-lg rounded-3xl p-8 shadow-2xl border border-white/20 relative z-10 transform hover:scale-105 transition-transform duration-300">
+                    <div class="text-center space-y-4">
+                        <div class="text-7xl font-bold bg-clip-text text-transparent bg-gradient-to-b from-white to-blue-200">
+                            <%= lunar.day %>
+                        </div>
+                        <div class="text-2xl font-semibold tracking-wide">
+                            Tháng <%= lunar.month %> <%= lunar.leap ? '(nhuận)' : '' %>
+                        </div>
+                        <div class="text-blue-200">
+                            <%= solar.toLocaleDateString('vi-VN', { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' }) %>
+                        </div>
+                        <!-- Giờ hoàng đạo -->
+                        <div class="mt-6 pt-6 border-t border-white/20">
+                            <p class="text-sm mb-2">Giờ hoàng đạo:</p>
+                            <div class="grid grid-cols-2 gap-2 sm:grid-cols-3">
+                                <% lunar.luckyHours.forEach(hour => { %>
+                                    <span class="px-3 py-2 bg-white/20 rounded-lg text-sm font-medium hover:bg-white/30 transition-colors">
+                                        <%= hour.name %>: <%= hour.time[0] %>h - <%= hour.time[1] %>h
+                                    </span>
+                                <% }); %>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <main class="max-w-7xl mx-auto px-4 py-12">
+        <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
+            <!-- Phần chuyển đổi -->
+            <div class="bg-white rounded-2xl shadow-lg p-8 dark:bg-gray-800 border border-gray-100 dark:border-gray-700">
+                <div class="flex items-center justify-between mb-6">
+                    <h2 class="text-2xl font-bold text-gray-800 dark:text-white">Chuyển đổi ngày</h2>
+                    <div id="yearInfo" class="text-lg text-blue-600 dark:text-blue-400">
+                        <%= lunar.yearName %>
+                    </div>
+                </div>
+                <div class="space-y-6">
+                    <div class="conversion-card">
+                        <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                            Ngày Dương lịch
+                        </label>
+                        <div class="flex space-x-4">
+                            <input type="date" id="solarDate" 
+                                value="<%= solar.toISOString().split('T')[0] %>"
+                                class="flex-1 rounded-lg border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:text-white transition-colors">
+                            <button onclick="convertToLunar()" 
+                                class="px-4 py-2 bg-gradient-to-r from-blue-600 to-blue-700 text-white rounded-lg hover:from-blue-700 hover:to-blue-800 transition-all duration-200 shadow-md hover:shadow-lg">
+                                <i class="fas fa-exchange-alt mr-2"></i>
+                                Chuyển đổi
+                            </button>
+                        </div>
+                    </div>
+
+                    <div class="conversion-card">
+                        <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                            Ngày Âm lịch
+                        </label>
+                        <div class="flex space-x-4">
+                            <input type="text" id="lunarDate" 
+                                value="<%= `${lunar.year}-${String(lunar.month).padStart(2, '0')}-${String(lunar.day).padStart(2, '0')}` %>"
+                                placeholder="YYYY-MM-DD"
+                                pattern="\d{4}-\d{2}-\d{2}"
+                                title="Nhập theo định dạng YYYY-MM-DD"
+                                class="flex-1 rounded-lg border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:text-white">
+                            <button onclick="convertToSolar()"
+                                class="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors duration-200">
+                                <i class="fas fa-exchange-alt mr-2"></i>
+                                Chuyển đổi
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Phần hiển thị lịch -->
+            <div class="bg-white rounded-2xl shadow-lg p-8 dark:bg-gray-800 border border-gray-100 dark:border-gray-700">
+                <div class="flex justify-between items-center mb-6">
+                    <h2 class="text-2xl font-bold text-gray-800 dark:text-white">Lịch tháng</h2>
+                    <div class="flex space-x-2">
+                        <button class="p-2 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-700">
+                            <i class="fas fa-chevron-left text-gray-600 dark:text-gray-300"></i>
+                        </button>
+                        <button class="p-2 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-700">
+                            <i class="fas fa-chevron-right text-gray-600 dark:text-gray-300"></i>
+                        </button>
+                    </div>
+                </div>
+                <div id="calendarGrid" class="grid grid-cols-7 gap-2">
+                    <!-- Calendar header -->
+                    <% ['CN', 'T2', 'T3', 'T4', 'T5', 'T6', 'T7'].forEach(day => { %>
+                        <div class="text-center font-medium text-gray-600 dark:text-gray-400">
+                            <%= day %>
+                        </div>
+                    <% }); %>
+                    
+                    <!-- Calendar days -->
+                    <% calendar.forEach(week => { %>
+                        <% week.forEach(day => { %>
+                            <div class="relative p-2 text-center rounded-lg
+                                <%= day.solar.isCurrentMonth ? 'bg-white dark:bg-gray-700' : 'bg-gray-50 dark:bg-gray-800' %>
+                                <%= day.isToday ? 'ring-2 ring-blue-500' : '' %>">
+                                <div class="<%= day.solar.isCurrentMonth ? 'text-gray-900 dark:text-white' : 'text-gray-400 dark:text-gray-500' %>">
+                                    <%= day.solar.day %>
+                                </div>
+                                <div class="text-xs <%= day.lunar.isFirstDay ? 'text-red-500' : 'text-gray-500 dark:text-gray-400' %>">
+                                    <%= day.lunar.day %>
+                                    <% if (day.lunar.isFirstDay) { %>
+                                        /<%= day.lunar.month %>
+                                    <% } %>
+                                </div>
+                            </div>
+                        <% }); %>
+                    <% }); %>
+                </div>
+            </div>
+        </div>
+
+        <!-- Phần hiển thị sự kiện -->
+        <div class="mt-12 bg-white rounded-2xl shadow-lg p-8 dark:bg-gray-800 border border-gray-100 dark:border-gray-700">
+            <h2 class="text-2xl font-bold mb-8 text-gray-800 dark:text-white">Ngày lễ sắp tới</h2>
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+                <% festivals.forEach(festival => { %>
+                <div class="bg-gray-50 rounded-xl p-6 dark:bg-gray-700 hover:shadow-lg transition-shadow duration-300 border border-gray-100 dark:border-gray-600">
+                    <div class="flex items-center space-x-4">
+                        <div class="w-12 h-12 <%= festival.type === 'major' ? 'bg-red-100' : 'bg-blue-100' %> rounded-full flex items-center justify-center">
+                            <i class="fas fa-calendar-day <%= festival.type === 'major' ? 'text-red-600' : 'text-blue-600' %>"></i>
+                        </div>
+                        <div>
+                            <h3 class="font-semibold text-gray-800 dark:text-white"><%= festival.name %></h3>
+                            <p class="text-sm text-gray-600 dark:text-gray-300">
+                                Còn <%= festival.daysUntil %> ngày
+                                <span class="text-xs text-gray-500">
+                                    (<%= festival.lunarDate.day %>/<%= festival.lunarDate.month %> âm lịch)
+                                </span>
+                            </p>
+                        </div>
+                    </div>
+                </div>
+                <% }); %>
+            </div>
+        </div>
+
+        <!-- Phần ngày tốt -->
+        <div class="mt-12 bg-white rounded-2xl shadow-lg p-8 dark:bg-gray-800 border border-gray-100 dark:border-gray-700">
+            <h2 class="text-2xl font-bold mb-8 text-gray-800 dark:text-white">Ngày tốt trong tháng</h2>
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+                <% goodDays.forEach(day => { %>
+                    <div class="bg-gray-50 rounded-xl p-6 dark:bg-gray-700 hover:shadow-lg transition-all duration-300 transform hover:-translate-y-1 border border-gray-100 dark:border-gray-600">
+                        <div class="flex items-center justify-between mb-2">
+                            <div class="flex items-center space-x-3">
+                                <div class="w-10 h-10 bg-green-100 dark:bg-green-900 rounded-full flex items-center justify-center">
+                                    <span class="text-green-600 dark:text-green-400 font-semibold">
+                                        <%= day.lunar.day %>
+                                    </span>
+                                </div>
+                                <div>
+                                    <h3 class="font-semibold text-gray-800 dark:text-white">
+                                        <%= day.lunar.dayName %>
+                                    </h3>
+                                    <p class="text-sm text-gray-500 dark:text-gray-400">
+                                        <%= `${day.solar.day}/${day.solar.month}/${day.solar.year}` %>
+                                    </p>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="mt-3">
+                            <p class="text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
+                                Phù hợp cho:
+                            </p>
+                            <div class="flex flex-wrap gap-2">
+                                <% day.activities.forEach(activity => { %>
+                                    <span class="px-2 py-1 bg-green-100 dark:bg-green-900 text-green-800 dark:text-green-200 text-xs rounded">
+                                        <%= activity %>
+                                    </span>
+                                <% }); %>
+                            </div>
+                            <div class="mt-2 text-xs text-gray-500 dark:text-gray-400">
+                                <% day.reasons.forEach(reason => { %>
+                                    <p><i class="fas fa-check text-green-500 mr-1"></i> <%= reason %></p>
+                                <% }); %>
+                            </div>
+                        </div>
+                    </div>
+                <% }); %>
+            </div>
+        </div>
+    </main>
+
+    <script src="/js/languages.js"></script>
+    <script src="/js/main.js"></script>
+    <link rel="icon" type="image/x-icon" href="/images/favicon.ico">
+</body>
+</html> 
